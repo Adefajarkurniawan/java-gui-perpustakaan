@@ -148,4 +148,19 @@ public class UserDashboardController {
         }
     }
 
+
+
+    @FXML
+    private void openReturnBooks() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/return_books.fxml"));
+            Stage stage = (Stage) tableBooks.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Pengembalian Buku");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 }

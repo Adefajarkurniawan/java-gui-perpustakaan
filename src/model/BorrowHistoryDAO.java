@@ -13,7 +13,7 @@ public class BorrowHistoryDAO {
             // Sudah ada pinjaman aktif, tolak
             return false;
         }
-        
+
         String sql = "INSERT INTO loans (user_id, book_id, loan_date, return_date, status) VALUES (?, ?, ?, NULL, 'dipinjam')";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -69,21 +69,69 @@ public class BorrowHistoryDAO {
 
 
     public static boolean hasActiveLoan(int userId, int bookId) {
-    String sql = "SELECT COUNT(*) FROM loans WHERE user_id = ? AND book_id = ? AND status = 'dipinjam'";
-    try (Connection conn = DatabaseConnection.getConnection();
-         PreparedStatement stmt = conn.prepareStatement(sql)) {
+        String sql = "SELECT COUNT(*) FROM loans WHERE user_id = ? AND book_id = ? AND status = 'dipinjam'";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
-        stmt.setInt(1, userId);
-        stmt.setInt(2, bookId);
-        ResultSet rs = stmt.executeQuery();
+            stmt.setInt(1, userId);
+            stmt.setInt(2, bookId);
+            ResultSet rs = stmt.executeQuery();
 
-        if (rs.next()) {
-            return rs.getInt(1) > 0;  // true jika ada peminjaman aktif
+            if (rs.next()) {
+                return rs.getInt(1) > 0;  // true jika ada peminjaman aktif
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
+        return false;
     }
-    return false;
-}
+
+
+
+    public static List<LoanRecord> getActiveLoansByUser(int userId) {
+        List<LoanRecord> list = new ArrayList<>();
+        String sql = "SELECT l.id, b.title, l.loan_date, l.status " +
+                    "FROM loans l JOIN books b ON l.book_id = b.id " +
+                    "WHERE l.user_id = ? AND l.status = 'dipinjam' " +
+                    "ORDER BY l.loan_date DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            ResultSet rs = stmt.executeQuery();
+
+            while (rs.next()) {
+                int loanId = rs.getInt("id");
+                String title = rs.getString("title");
+                Date loanDate = rs.getDate("loan_date");
+                String status = rs.getString("status");
+
+                list.add(new LoanRecord(loanId, title,
+                        loanDate != null ? loanDate.toString() : "-",
+                        status));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        return list;
+    }
+
+    
+    public static boolean returnBook(int loanId) {
+        String sql = "UPDATE loans SET status = 'dikembalikan', return_date = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(java.time.LocalDate.now()));
+            stmt.setInt(2, loanId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
 
 }
