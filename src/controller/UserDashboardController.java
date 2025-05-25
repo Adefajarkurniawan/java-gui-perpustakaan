@@ -38,7 +38,7 @@ public class UserDashboardController {
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
 
         loadBooks();
-        addBorrowButtonToTable();
+        addActionButtonsToTable();
 
         // Add listener to search field for live filtering
         txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
@@ -75,28 +75,81 @@ public class UserDashboardController {
     }
 
 
-      private void addBorrowButtonToTable() {
-        colAction.setCellFactory(param -> new TableCell<Book, Void>() {
-            private final Button btnBorrow = new Button("Pinjam");
+    private void addActionButtonsToTable() {
+    colAction.setCellFactory(param -> new TableCell<Book, Void>() {
+        private final Button btnBorrow = new Button("Pinjam");
+        private final Button btnReturn = new Button("Kembalikan");
 
-            {
-                btnBorrow.setOnAction(event -> {
-                    Book book = getTableView().getItems().get(getIndex());
-                    borrowBook(book);
-                });
-            }
+        {
+            btnBorrow.setOnAction(event -> {
+                Book book = getTableView().getItems().get(getIndex());
+                borrowBook(book);
+            });
+
+            btnReturn.setOnAction(event -> {
+                Book book = getTableView().getItems().get(getIndex());
+                returnBook(book);
+            });
+        }
 
             @Override
             protected void updateItem(Void item, boolean empty) {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
+                    return;
+                }
+
+                Book book = getTableView().getItems().get(getIndex());
+                int userId = Session.getCurrentUserId();
+                boolean isBorrowed = BorrowHistoryDAO.isBookBorrowedByUser(userId, book.getId());
+
+                if (isBorrowed) {
+                    setGraphic(btnReturn);
                 } else {
                     setGraphic(btnBorrow);
                 }
             }
         });
     }
+
+
+        private void returnBook(Book book) {
+        int userId = Session.getCurrentUserId();
+        if (userId == 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setContentText("User belum login!");
+            alert.showAndWait();
+            return;
+        }
+
+        Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
+        confirm.setTitle("Konfirmasi Pengembalian");
+        confirm.setHeaderText("Kembalikan Buku");
+        confirm.setContentText("Apakah Anda yakin ingin mengembalikan buku:\n" + book.getTitle() + "?");
+
+        confirm.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                boolean success = BorrowHistoryDAO.returnBookByUserAndBook(userId, book.getId());
+                if (success) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Berhasil");
+                    alert.setContentText("Buku berhasil dikembalikan.");
+                    alert.showAndWait();
+                    loadBooks(); // refresh tabel
+                } else {
+                    Alert alert = new Alert(Alert.AlertType.ERROR);
+                    alert.setTitle("Gagal");
+                    alert.setContentText("Gagal mengembalikan buku.");
+                    alert.showAndWait();
+
+                }
+            }
+        });
+    }
+
+
 
 
 
@@ -125,6 +178,7 @@ public class UserDashboardController {
                     alert.setTitle("Berhasil");
                     alert.setContentText("Buku berhasil dipinjam.");
                     alert.showAndWait();
+                    loadBooks();
                 } else {
                     Alert alert = new Alert(Alert.AlertType.ERROR);
                     alert.setTitle("Gagal");
@@ -143,20 +197,6 @@ public class UserDashboardController {
             Stage stage = (Stage) tableBooks.getScene().getWindow();
             stage.setScene(new Scene(root));
             stage.setTitle("Riwayat Peminjaman");
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-
-
-    @FXML
-    private void openReturnBooks() {
-        try {
-            Parent root = FXMLLoader.load(getClass().getResource("/view/return_books.fxml"));
-            Stage stage = (Stage) tableBooks.getScene().getWindow();
-            stage.setScene(new Scene(root));
-            stage.setTitle("Pengembalian Buku");
         } catch (IOException e) {
             e.printStackTrace();
         }

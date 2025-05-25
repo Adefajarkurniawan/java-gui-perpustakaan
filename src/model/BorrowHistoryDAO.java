@@ -134,4 +134,41 @@ public class BorrowHistoryDAO {
         }
     }
 
+    public static boolean returnBookByUserAndBook(int userId, int bookId) {
+        String sql = "UPDATE loans SET status = 'dikembalikan', return_date = ? WHERE user_id = ? AND book_id = ? AND status = 'dipinjam'";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(java.time.LocalDate.now()));
+            stmt.setInt(2, userId);
+            stmt.setInt(3, bookId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+
+    public static boolean isBookBorrowedByUser(int userId, int bookId) {
+        String sql = "SELECT COUNT(*) FROM loans WHERE user_id = ? AND book_id = ? AND status = 'dipinjam'";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, userId);
+            stmt.setInt(2, bookId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt(1) > 0;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
+
+
 }
