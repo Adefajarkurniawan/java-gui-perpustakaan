@@ -36,6 +36,11 @@ public class AdminDashboardController {
 
         loadBooks();
         addActionButtonsToTable();
+
+        // Add listener to search field for live filtering
+        txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
+            filterBooks(newValue);
+        });
     }
 
     private void loadBooks() {
@@ -76,6 +81,20 @@ public class AdminDashboardController {
                 }
             }
         });
+    }
+
+     private void filterBooks(String query) {
+        ObservableList<Book> filteredList = FXCollections.observableArrayList();
+
+        for (Book book : BookDAO.getAllBooks()) {
+            if (book.getTitle().toLowerCase().contains(query.toLowerCase()) || 
+                book.getAuthor().toLowerCase().contains(query.toLowerCase()) || 
+                book.getGenre().toLowerCase().contains(query.toLowerCase())) {
+                filteredList.add(book);
+            }
+        }
+
+        tableBooks.setItems(filteredList); // Set the filtered list to the table
     }
 
 
