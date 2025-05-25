@@ -5,10 +5,26 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controller.AdminDashboardController" alignment="CENTER" spacing="20"
-      prefWidth="600" prefHeight="400" stylesheets="@style.css">
+      prefWidth="850" prefHeight="650" stylesheets="@style.css">
 
     <Label text="Dashboard Admin" styleClass="header-label"/>
 
-    <!-- Tambahkan komponen admin disini -->
+    <HBox spacing="10">
+        <Button text="Tambah Buku" onAction="#showAddBookDialog" />
+        <TextField fx:id="txtSearch" promptText="Cari buku..." />
+        <Button text="Cari" onAction="#handleSearch" />
+    </HBox>
+
+    <!-- Tabel Daftar Buku -->
+    <TableView fx:id="tableBooks" prefHeight="250" prefWidth="880">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50" />
+            <TableColumn fx:id="colTitle" text="Judul" prefWidth="250" />
+            <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200" />
+            <TableColumn fx:id="colYear" text="Tahun" prefWidth="80" />
+            <TableColumn fx:id="colGenre" text="Genre" prefWidth="150" />
+            <TableColumn fx:id="colActions" text="Aksi" prefWidth="120" />
+        </columns>
+    </TableView>
 
 </VBox>
