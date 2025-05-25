@@ -4,6 +4,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.*;
 import javafx.collections.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.scene.layout.VBox;
 import javafx.stage.Stage;
 import javafx.event.ActionEvent;
@@ -44,14 +45,22 @@ public class AdminDashboardController {
     }
 
     private void addActionButtonsToTable() {
-          // Action buttons (edit/delete) in the table
+        // Menambahkan tombol Edit dan Hapus di kolom Aksi
         colActions.setCellFactory(param -> new TableCell<Book, Void>() {
             private final Button btnEdit = new Button("Edit");
+            private final Button btnDelete = new Button("Hapus");
 
             {
+                // Action untuk tombol Edit
                 btnEdit.setOnAction(event -> {
                     Book book = getTableView().getItems().get(getIndex());
                     showEditBookDialog(book);
+                });
+
+                // Action untuk tombol Hapus
+                btnDelete.setOnAction(event -> {
+                    Book book = getTableView().getItems().get(getIndex());
+                    showDeleteConfirmationDialog(book);
                 });
             }
 
@@ -61,7 +70,36 @@ public class AdminDashboardController {
                 if (empty) {
                     setGraphic(null);
                 } else {
-                    setGraphic(btnEdit);
+                    // Buat HBox untuk menampung tombol Edit dan Hapus
+                    HBox hbox = new HBox(10, btnEdit, btnDelete);
+                    setGraphic(hbox);
+                }
+            }
+        });
+    }
+
+
+    // Dialog to confirm delete action
+    private void showDeleteConfirmationDialog(Book book) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Konfirmasi Hapus Buku");
+        alert.setHeaderText("Apakah Anda yakin ingin menghapus buku ini?");
+        alert.setContentText("Judul Buku: " + book.getTitle());
+
+        alert.showAndWait().ifPresent(response -> {
+            if (response == ButtonType.OK) {
+                // Proceed with delete
+                if (BookDAO.deleteBook(book.getId())) {
+                    loadBooks();  // Reload the table with updated list of books
+                    Alert successAlert = new Alert(Alert.AlertType.INFORMATION);
+                    successAlert.setTitle("Success");
+                    successAlert.setContentText("Buku berhasil dihapus!");
+                    successAlert.showAndWait();
+                } else {
+                    Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+                    errorAlert.setTitle("Error");
+                    errorAlert.setContentText("Gagal menghapus buku.");
+                    errorAlert.showAndWait();
                 }
             }
         });
@@ -153,7 +191,7 @@ public class AdminDashboardController {
         });
     }
 
-      private void showErrorAlert(String message) {
+    private void showErrorAlert(String message) {
         Alert alert = new Alert(Alert.AlertType.ERROR);
         alert.setTitle("Input Error");
         alert.setHeaderText(null);

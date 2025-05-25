@@ -16,15 +16,15 @@
     </HBox>
 
     <!-- Tabel Daftar Buku -->
-    <TableView fx:id="tableBooks" prefHeight="250" prefWidth="880">
-        <columns>
-            <TableColumn fx:id="colId" text="ID" prefWidth="50" />
-            <TableColumn fx:id="colTitle" text="Judul" prefWidth="250" />
-            <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200" />
-            <TableColumn fx:id="colYear" text="Tahun" prefWidth="80" />
-            <TableColumn fx:id="colGenre" text="Genre" prefWidth="150" />
-            <TableColumn fx:id="colActions" text="Aksi" prefWidth="120" />
-        </columns>
-    </TableView>
+    <TableView fx:id="tableBooks" prefHeight="450" prefWidth="880">
+      <columns>
+          <TableColumn fx:id="colId" text="ID" prefWidth="50" />
+          <TableColumn fx:id="colTitle" text="Judul" prefWidth="250" />
+          <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200" />
+          <TableColumn fx:id="colYear" text="Tahun" prefWidth="80" />
+          <TableColumn fx:id="colGenre" text="Genre" prefWidth="150" />
+          <TableColumn fx:id="colActions" text="Aksi" prefWidth="120" /> <!-- Kolom Aksi -->
+      </columns>
+  </TableView>
 
 </VBox>
