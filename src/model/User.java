@@ -7,6 +7,8 @@ import java.sql.SQLException;
 
 public class User {
 
+    
+
     public static boolean register(String username, String password) {
         if (username.contains(" ") || password.contains(" ")) {
             return false; // tolak input yang mengandung spasi
@@ -39,6 +41,8 @@ public class User {
         }
     }
 
+
+
     public static String loginAndGetRole(String username, String password) {
         if (username.contains(" ") || password.contains(" ")) {
             return null;
@@ -66,5 +70,23 @@ public class User {
             e.printStackTrace();
             return null;
         }
+    }
+
+
+     // Ambil user id dari username
+    public static int getUserIdByUsername(String username) {
+        String sql = "SELECT id FROM users WHERE username = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+             PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setString(1, username);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return 0; // jika user tidak ditemukan
     }
 }

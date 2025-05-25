@@ -5,15 +5,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.PasswordField;
 import javafx.scene.control.TextField;
 import model.User;
-
 import java.io.IOException;
-
 import javafx.event.ActionEvent;
 import javafx.scene.control.Hyperlink;
 import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import model.Session;
+
 
 public class LoginController {
 
@@ -41,7 +41,15 @@ public class LoginController {
 
         String role = User.loginAndGetRole(username, password);
         if (role != null) {
+            // Set session info
+            Session.setCurrentUser(username);
+            int userId = User.getUserIdByUsername(username);
+            Session.setCurrentUserId(userId);
+
+
             lblMessage.setText("Login berhasil sebagai " + role);
+
+            
             try {
                 Parent root;
                 if (role.equals("admin")) {
