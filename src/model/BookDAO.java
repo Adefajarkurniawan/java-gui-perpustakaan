@@ -75,7 +75,7 @@ public class BookDAO {
             stmt.setString(2, book.getAuthor());
             stmt.setInt(3, book.getYearPublished());
             stmt.setString(4, book.getGenre());
-            stmt.setInt(6, book.getId());
+            stmt.setInt(5, book.getId());
 
             return stmt.executeUpdate() > 0;
 

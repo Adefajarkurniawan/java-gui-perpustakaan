@@ -44,8 +44,124 @@ public class AdminDashboardController {
     }
 
     private void addActionButtonsToTable() {
-        // Implement action buttons (edit, delete) in the table
+          // Action buttons (edit/delete) in the table
+        colActions.setCellFactory(param -> new TableCell<Book, Void>() {
+            private final Button btnEdit = new Button("Edit");
+
+            {
+                btnEdit.setOnAction(event -> {
+                    Book book = getTableView().getItems().get(getIndex());
+                    showEditBookDialog(book);
+                });
+            }
+
+            @Override
+            protected void updateItem(Void item, boolean empty) {
+                super.updateItem(item, empty);
+                if (empty) {
+                    setGraphic(null);
+                } else {
+                    setGraphic(btnEdit);
+                }
+            }
+        });
     }
+
+    @FXML
+    private void showEditBookDialog(Book book) {
+        // Create dialog for editing the book
+        Dialog<Book> dialog = new Dialog<>();
+        dialog.setTitle("Edit Buku");
+
+        // Set the button types
+        ButtonType saveButtonType = new ButtonType("Simpan", ButtonBar.ButtonData.OK_DONE);
+        dialog.getDialogPane().getButtonTypes().addAll(saveButtonType, ButtonType.CANCEL);
+
+        // Create the form fields
+        TextField txtTitle = new TextField(book.getTitle());
+        txtTitle.setPromptText("Judul Buku");
+        TextField txtAuthor = new TextField(book.getAuthor());
+        txtAuthor.setPromptText("Penulis");
+        TextField txtYear = new TextField(String.valueOf(book.getYearPublished()));
+        txtYear.setPromptText("Tahun Terbit (1990 - 2025)");
+        ComboBox<String> comboGenre = new ComboBox<>();
+        comboGenre.getItems().addAll("Fantasi", "Science", "Petualangan", "Misteri", "Horor", "Romansa", "Drama");
+        comboGenre.setValue(book.getGenre());
+        comboGenre.setPromptText("Pilih Genre");
+
+        // Layout form
+        VBox vbox = new VBox(10, txtTitle, txtAuthor, txtYear, comboGenre);
+        dialog.getDialogPane().setContent(vbox);
+
+        // Handle the button click
+        dialog.setResultConverter(dialogButton -> {
+            if (dialogButton == saveButtonType) {
+                String title = txtTitle.getText().trim();
+                String author = txtAuthor.getText().trim();
+                String year = txtYear.getText().trim();
+                String genre = comboGenre.getValue();
+
+                // Validasi
+                if (title.isEmpty() || author.isEmpty() || year.isEmpty() || genre == null) {
+                    showErrorAlert("Semua field harus diisi!");
+                    return null;
+                }
+
+                // Validasi tahun terbit (1990 - 2025)
+                try {
+                    int yearInt = Integer.parseInt(year);
+                    if (yearInt < 1990 || yearInt > 2025) {
+                        showErrorAlert("Tahun terbit harus antara 1990 hingga 2025!");
+                        return null;
+                    }
+                } catch (NumberFormatException e) {
+                    showErrorAlert("Tahun terbit harus berupa angka 4 digit!");
+                    return null;
+                }
+
+                // Validasi nama buku tidak boleh sama
+                if (BookDAO.isTitleExist(title)) {
+                    showErrorAlert("Nama buku sudah ada!");
+                    return null;
+                }
+
+                // Update the book data
+                book.setTitle(title);
+                book.setAuthor(author);
+                book.setYearPublished(Integer.parseInt(year));
+                book.setGenre(genre);
+
+                return book;
+            }
+            return null;
+        });
+
+        // Show the dialog and get the result
+        dialog.showAndWait().ifPresent(updatedBook -> {
+            if (BookDAO.updateBook(updatedBook)) {
+                loadBooks();  // Reload the table with updated list of books
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Success");
+                alert.setContentText("Buku berhasil diperbarui!");
+                alert.showAndWait();
+            } else {
+                Alert alert = new Alert(Alert.AlertType.ERROR);
+                alert.setTitle("Error");
+                alert.setContentText("Gagal memperbarui buku.");
+                alert.showAndWait();
+            }
+        });
+    }
+
+      private void showErrorAlert(String message) {
+        Alert alert = new Alert(Alert.AlertType.ERROR);
+        alert.setTitle("Input Error");
+        alert.setHeaderText(null);
+        alert.setContentText(message);
+        alert.showAndWait();
+    }
+
+    
 
     // Implement actions like adding books, searching, etc.
     @FXML
@@ -136,13 +252,7 @@ public class AdminDashboardController {
     }
 
     
-    private void showErrorAlert(String message) {
-        Alert alert = new Alert(Alert.AlertType.ERROR);
-        alert.setTitle("Input Error");
-        alert.setHeaderText(null);
-        alert.setContentText(message);
-        alert.showAndWait();
-    }
+  
 
     @FXML
     private void handleSearch() {
