@@ -1,8 +1,15 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.stage.Stage;
+
+import java.io.IOException;
+
 import javafx.collections.*;
 import model.UserLoanRecord;
 import model.BorrowHistoryDAO;
@@ -87,6 +94,19 @@ public class AdminUsersLoansController {
             }
         });
     }
+
+    @FXML
+    private void goBackToDashboard() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/admin_dashboard.fxml"));
+            Stage stage = (Stage) tableUsersLoans.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Dashboard Admin");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     
 }

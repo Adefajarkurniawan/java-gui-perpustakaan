@@ -5,10 +5,17 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-public class User {
+public class User extends Person {
 
-    
+      public User() {
+        this.role = "user";
+    }
 
+    public User(int id, String username) {
+        super(id, username, "user");
+    }
+
+    // Pendaftaran user (registrasi) tetap static
     public static boolean register(String username, String password) {
         if (username.contains(" ") || password.contains(" ")) {
             return false; // tolak input yang mengandung spasi
@@ -20,14 +27,12 @@ public class User {
              PreparedStatement checkStmt = conn.prepareStatement(sqlCheck);
              PreparedStatement insertStmt = conn.prepareStatement(sqlInsert)) {
 
-            // cek username sudah ada atau belum
             checkStmt.setString(1, username);
             ResultSet rs = checkStmt.executeQuery();
             if (rs.next()) {
                 return false; // username sudah ada
             }
 
-            // Hash password dengan SHA-256
             String hashedPassword = HashUtil.hashPassword(password);
 
             insertStmt.setString(1, username);
@@ -43,12 +48,13 @@ public class User {
 
 
 
-    public static String loginAndGetRole(String username, String password) {
+    // Ubah login agar mengembalikan objek Person (User atau Admin)
+    public static Person login(String username, String password) {
         if (username.contains(" ") || password.contains(" ")) {
             return null;
         }
 
-        String sql = "SELECT password, role FROM users WHERE username = ?";
+        String sql = "SELECT id, password, role FROM users WHERE username = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -58,10 +64,15 @@ public class User {
             if (rs.next()) {
                 String storedHash = rs.getString("password");
                 String role = rs.getString("role");
+                int id = rs.getInt("id");
                 String inputHash = HashUtil.hashPassword(password);
 
                 if (inputHash != null && inputHash.equals(storedHash)) {
-                    return role; // kembalikan role jika login sukses
+                    if ("admin".equalsIgnoreCase(role)) {
+                        return new Admin(id, username);
+                    } else {
+                        return new User(id, username);
+                    }
                 }
             }
             return null;
@@ -73,20 +84,4 @@ public class User {
     }
 
 
-     // Ambil user id dari username
-    public static int getUserIdByUsername(String username) {
-        String sql = "SELECT id FROM users WHERE username = ?";
-        try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
-
-            stmt.setString(1, username);
-            ResultSet rs = stmt.executeQuery();
-            if (rs.next()) {
-                return rs.getInt("id");
-            }
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        return 0; // jika user tidak ditemukan
-    }
 }

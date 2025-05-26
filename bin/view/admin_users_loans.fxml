@@ -20,5 +20,6 @@
         </columns>
     </TableView>
 
-    
+    <Button text="Kembali ke Dashboard" onAction="#goBackToDashboard" styleClass="btn-primary"/>
+
 </VBox>

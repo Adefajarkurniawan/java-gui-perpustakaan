@@ -12,6 +12,7 @@ import javafx.stage.Stage;
 import javafx.scene.Scene;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
+import model.Person;
 import model.Session;
 
 
@@ -39,20 +40,16 @@ public class LoginController {
             return;
         }
 
-        String role = User.loginAndGetRole(username, password);
-        if (role != null) {
-            // Set session info
-            Session.setCurrentUser(username);
-            int userId = User.getUserIdByUsername(username);
-            Session.setCurrentUserId(userId);
+        Person person = User.login(username, password); // sekarang kembalikan objek Person
+        if (person != null) {
+            Session.setCurrentUser(person.getUsername());
+            Session.setCurrentUserId(person.getId());
 
+            lblMessage.setText("Login berhasil sebagai " + person.getRole());
 
-            lblMessage.setText("Login berhasil sebagai " + role);
-
-            
             try {
                 Parent root;
-                if (role.equals("admin")) {
+                if ("admin".equalsIgnoreCase(person.getRole())) {
                     root = FXMLLoader.load(getClass().getResource("/view/admin_dashboard.fxml"));
                 } else {
                     root = FXMLLoader.load(getClass().getResource("/view/user_dashboard.fxml"));
@@ -67,6 +64,7 @@ public class LoginController {
             lblMessage.setText("Username atau Password salah");
         }
     }
+
 
     @FXML
     private void goToRegister(ActionEvent event) {
