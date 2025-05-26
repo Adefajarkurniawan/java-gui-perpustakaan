@@ -1,7 +1,13 @@
 package controller;
 
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
+
+import java.io.IOException;
+
 import javafx.collections.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.HBox;
@@ -307,6 +313,21 @@ public class AdminDashboardController {
             }
         });
     }
+
+
+
+    @FXML
+    private void openUsersLoans() {
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/admin_users_loans.fxml"));
+            Stage stage = (Stage) tableBooks.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("User dan Peminjaman");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
 
     
   

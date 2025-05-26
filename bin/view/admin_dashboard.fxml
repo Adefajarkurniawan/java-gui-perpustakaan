@@ -7,7 +7,12 @@
       fx:controller="controller.AdminDashboardController" alignment="CENTER" spacing="20"
       prefWidth="850" prefHeight="650" stylesheets="@style.css">
 
-    <Label text="Dashboard Admin" styleClass="header-label"/>
+   <HBox spacing="10" style="-fx-background-color: #4A90E2; -fx-padding: 10;">
+      <Label text="Dashboard Admin" styleClass="header-label" />
+      <Button text="Lihat User Peminjaman" onAction="#openUsersLoans" />
+  </HBox>
+
+
 
     <HBox spacing="10">
         <Button text="Tambah Buku" onAction="#showAddBookDialog" />

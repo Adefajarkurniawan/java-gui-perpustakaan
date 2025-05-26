@@ -118,6 +118,7 @@ public class BorrowHistoryDAO {
         return list;
     }
 
+
     
     public static boolean returnBook(int loanId) {
         String sql = "UPDATE loans SET status = 'dikembalikan', return_date = ? WHERE id = ?";
@@ -133,6 +134,7 @@ public class BorrowHistoryDAO {
             return false;
         }
     }
+
 
     public static boolean returnBookByUserAndBook(int userId, int bookId) {
         String sql = "UPDATE loans SET status = 'dikembalikan', return_date = ? WHERE user_id = ? AND book_id = ? AND status = 'dipinjam'";
@@ -167,6 +169,58 @@ public class BorrowHistoryDAO {
             e.printStackTrace();
         }
         return false;
+    }
+
+
+
+    public static List<UserLoanRecord> getAllUserLoans() {
+        List<UserLoanRecord> list = new ArrayList<>();
+        String sql = "SELECT l.id, u.username, b.title, l.loan_date, l.status " +
+                    "FROM loans l " +
+                    "JOIN users u ON l.user_id = u.id " +
+                    "JOIN books b ON l.book_id = b.id " +
+                    "ORDER BY l.loan_date DESC";
+
+        try (Connection conn = DatabaseConnection.getConnection();
+            Statement stmt = conn.createStatement();
+            ResultSet rs = stmt.executeQuery(sql)) {
+
+            while (rs.next()) {
+                int loanId = rs.getInt("id");
+                String username = rs.getString("username");
+                String title = rs.getString("title");
+                Date loanDate = rs.getDate("loan_date");
+                String status = rs.getString("status");
+
+                list.add(new UserLoanRecord(
+                    loanId,
+                    username,
+                    title,
+                    loanDate != null ? loanDate.toString() : "-",
+                    status
+                ));
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return list;
+    }
+
+
+
+    public static boolean returnBookByLoanId(int loanId) {
+        String sql = "UPDATE loans SET status = 'dikembalikan', return_date = ? WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setDate(1, Date.valueOf(java.time.LocalDate.now()));
+            stmt.setInt(2, loanId);
+
+            return stmt.executeUpdate() > 0;
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 
 
