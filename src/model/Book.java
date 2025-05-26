@@ -6,17 +6,15 @@ public class Book {
     private String author;
     private int yearPublished;
     private String genre;
-    private String coverImage; // nama file atau path
 
     public Book() {}
 
-    public Book(int id, String title, String author, int yearPublished, String genre, String coverImage) {
+    public Book(int id, String title, String author, int yearPublished, String genre) {
         this.id = id;
         this.title = title;
         this.author = author;
         this.yearPublished = yearPublished;
         this.genre = genre;
-        this.coverImage = coverImage;
     }
 
     // getter & setter semua atribut
@@ -35,6 +33,4 @@ public class Book {
     public String getGenre() { return genre; }
     public void setGenre(String genre) { this.genre = genre; }
 
-    public String getCoverImage() { return coverImage; }
-    public void setCoverImage(String coverImage) { this.coverImage = coverImage; }
 }
