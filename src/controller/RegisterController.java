@@ -65,6 +65,7 @@ public class RegisterController {
             Scene loginScene = new Scene(loginRoot);
             Stage stage = (Stage) linkLogin.getScene().getWindow();
             stage.setScene(loginScene);
+            stage.show(); 
         } catch (Exception e) {
             e.printStackTrace();
         }

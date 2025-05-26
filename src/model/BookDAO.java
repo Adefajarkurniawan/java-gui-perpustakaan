@@ -4,7 +4,7 @@ import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class BookDAO {
+public class BookDAO implements IBookOperations {
 
     public static List<Book> getAllBooks() {
         List<Book> books = new ArrayList<>();
@@ -32,7 +32,7 @@ public class BookDAO {
         return books;
     }
 
-    public static boolean addBook(Book book) {
+    public boolean addBook(Book book) {
         String sql = "INSERT INTO books (title, author, year_published, genre, stock) VALUES (?, ?, ?, ?, ?)";
         
         try (Connection conn = DatabaseConnection.getConnection();
@@ -53,12 +53,13 @@ public class BookDAO {
     }
 
     // Cek apakah nama buku sudah ada di database
-    public static boolean isTitleExist(String title) {
+    public static boolean isTitleExist(String title, int bookId) {
         String sql = "SELECT COUNT(*) FROM books WHERE title = ?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setString(1, title);
+            stmt.setInt(2, bookId);
             ResultSet rs = stmt.executeQuery();
             if (rs.next() && rs.getInt(1) > 0) {
                 return true; // Buku dengan nama ini sudah ada
@@ -69,7 +70,7 @@ public class BookDAO {
         return false; // Nama buku belum ada
     }
 
-    public static boolean updateBook(Book book) {
+    public boolean updateBook(Book book) {
         String sql = "UPDATE books SET title=?, author=?, year_published=?, genre=?, stock=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -89,7 +90,7 @@ public class BookDAO {
         }
     }
 
-    public static boolean deleteBook(int bookId) {
+    public boolean deleteBook(int bookId) {
         String sql = "DELETE FROM books WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {

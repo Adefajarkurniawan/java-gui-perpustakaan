@@ -6,7 +6,9 @@ public class Book {
     private String author;
     private int yearPublished;
     private String genre;
-    private int stock;  // baru
+    public static final int MAX_STOCK = 100;
+    private int stock;  
+    
 
     public Book() {}
 
@@ -40,7 +42,9 @@ public class Book {
     }
 
     public void setStock(int stock) {
-        this.stock = stock;
+        if(stock <= MAX_STOCK) {
+            this.stock = stock;
+        }
     }
 
 }

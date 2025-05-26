@@ -18,7 +18,7 @@
     <Button text="Login" onAction="#handleLogin" styleClass="btn-primary" maxWidth="Infinity"/>
     <HBox spacing="10" alignment="CENTER">
         <Label text="Belum punya akun?"/>
-        <Hyperlink text="Daftar" onAction="#goToRegister"/>
+        <Hyperlink fx:id="linkRegister" text="Daftar" onAction="#goToRegister"/>
     </HBox>
     <Label fx:id="lblMessage" styleClass="error-label"/>
 

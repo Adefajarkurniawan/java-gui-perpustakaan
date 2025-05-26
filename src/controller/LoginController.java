@@ -68,13 +68,20 @@ public class LoginController {
 
     @FXML
     private void goToRegister(ActionEvent event) {
-        try {
-            Parent registerRoot = FXMLLoader.load(getClass().getResource("/view/register.fxml"));
-            Scene registerScene = new Scene(registerRoot);
-            Stage stage = (Stage) linkRegister.getScene().getWindow();
-            stage.setScene(registerScene);
-        } catch (Exception e) {
-            e.printStackTrace();
+        // Pastikan linkRegister sudah terinisialisasi dengan benar
+        if (linkRegister != null) {
+            try {
+                Parent registerRoot = FXMLLoader.load(getClass().getResource("/view/register.fxml"));
+                Scene registerScene = new Scene(registerRoot);
+                Stage stage = (Stage) linkRegister.getScene().getWindow();
+                stage.setScene(registerScene);
+                stage.show();
+            } catch (IOException e) {
+                e.printStackTrace();
+                lblMessage.setText("Gagal membuka halaman registrasi. Silakan coba lagi.");
+            }
+        } else {
+            System.err.println("linkRegister is null.");
         }
     }
 }
