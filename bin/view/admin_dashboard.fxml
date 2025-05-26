@@ -10,6 +10,7 @@
    <HBox spacing="10" style="-fx-background-color: #4A90E2; -fx-padding: 10;">
       <Label text="Dashboard Admin" styleClass="header-label" />
       <Button text="Lihat User Peminjaman" onAction="#openUsersLoans" />
+      <Button text="Logout" onAction="#handleLogout" />
   </HBox>
 
 

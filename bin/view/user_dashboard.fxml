@@ -17,7 +17,7 @@
         <TextField fx:id="txtSearch" promptText="Cari buku..." prefWidth="400"/>
         <Button text="Cari" onAction="#handleSearch"/>
         <Button text="Riwayat Peminjaman" onAction="#openBorrowHistory" styleClass="btn-primary"/>
-        
+        <Button text="Logout" onAction="#handleLogout" />
     </HBox>
 
     <!-- Table buku -->

@@ -362,6 +362,21 @@ public class AdminDashboardController {
         }
     }
 
+    @FXML
+    private void handleLogout() {
+        // Clear session
+        model.Session.clear();
+
+        // Pindah ke halaman login
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+            Stage stage = (Stage) tableBooks.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Perpustakaan");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 
     
   

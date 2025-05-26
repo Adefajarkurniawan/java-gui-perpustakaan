@@ -222,4 +222,20 @@ public class UserDashboardController {
     }
 
 
+    @FXML
+    private void handleLogout() {
+        model.Session.clear();
+
+        try {
+            Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+            Stage stage = (Stage) tableBooks.getScene().getWindow();
+            stage.setScene(new Scene(root));
+            stage.setTitle("Login Perpustakaan");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+
+
 }
