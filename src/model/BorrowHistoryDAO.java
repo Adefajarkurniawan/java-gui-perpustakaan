@@ -14,15 +14,24 @@ public class BorrowHistoryDAO {
             return false;
         }
 
+        
+
         String sql = "INSERT INTO loans (user_id, book_id, loan_date, return_date, status) VALUES (?, ?, ?, NULL, 'dipinjam')";
         try (Connection conn = DatabaseConnection.getConnection();
-             PreparedStatement stmt = conn.prepareStatement(sql)) {
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
 
             stmt.setInt(1, userId);
             stmt.setInt(2, book.getId());
             stmt.setDate(3, Date.valueOf(LocalDate.now()));
 
-            return stmt.executeUpdate() > 0;
+            if (stmt.executeUpdate() > 0) {
+                // Kurangi stok buku setelah peminjaman berhasil
+                BookDAO.decreaseStock(book.getId());
+                return true;
+            } else {
+                return false;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
@@ -145,12 +154,20 @@ public class BorrowHistoryDAO {
             stmt.setInt(2, userId);
             stmt.setInt(3, bookId);
 
-            return stmt.executeUpdate() > 0;
+            if (stmt.executeUpdate() > 0) {
+                // Tambah stok buku setelah pengembalian
+                BookDAO.increaseStock(bookId);
+                return true;
+            } else {
+                return false;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;
         }
     }
+
 
 
 
@@ -209,6 +226,25 @@ public class BorrowHistoryDAO {
 
 
     public static boolean returnBookByLoanId(int loanId) {
+         // Pertama ambil book_id dari loanId
+        int bookId = -1;
+        String query = "SELECT book_id FROM loans WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
+
+            stmt.setInt(1, loanId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                bookId = rs.getInt("book_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+
+        if (bookId == -1) {
+            return false;  // gagal dapat bookId
+        }
+
         String sql = "UPDATE loans SET status = 'dikembalikan', return_date = ? WHERE id = ?";
         try (Connection conn = DatabaseConnection.getConnection();
             PreparedStatement stmt = conn.prepareStatement(sql)) {
@@ -216,7 +252,14 @@ public class BorrowHistoryDAO {
             stmt.setDate(1, Date.valueOf(java.time.LocalDate.now()));
             stmt.setInt(2, loanId);
 
-            return stmt.executeUpdate() > 0;
+            if (stmt.executeUpdate() > 0) {
+                // Tambah stok buku setelah pengembalian
+                BookDAO.increaseStock(bookId);
+                return true;
+            } else {
+                return false;
+            }
+
         } catch (SQLException e) {
             e.printStackTrace();
             return false;

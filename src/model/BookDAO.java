@@ -21,6 +21,7 @@ public class BookDAO {
                 book.setAuthor(rs.getString("author"));
                 book.setYearPublished(rs.getInt("year_published"));
                 book.setGenre(rs.getString("genre"));
+                book.setStock(rs.getInt("stock"));
                 books.add(book);
             }
 
@@ -32,7 +33,8 @@ public class BookDAO {
     }
 
     public static boolean addBook(Book book) {
-        String sql = "INSERT INTO books (title, author, year_published, genre) VALUES (?, ?, ?, ?)";
+        String sql = "INSERT INTO books (title, author, year_published, genre, stock) VALUES (?, ?, ?, ?, ?)";
+        
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -40,6 +42,7 @@ public class BookDAO {
             stmt.setString(2, book.getAuthor());
             stmt.setInt(3, book.getYearPublished());
             stmt.setString(4, book.getGenre());
+            stmt.setInt(5, book.getStock());
 
             return stmt.executeUpdate() > 0;
 
@@ -67,7 +70,7 @@ public class BookDAO {
     }
 
     public static boolean updateBook(Book book) {
-        String sql = "UPDATE books SET title=?, author=?, year_published=?, genre=? WHERE id=?";
+        String sql = "UPDATE books SET title=?, author=?, year_published=?, genre=?, stock=? WHERE id=?";
         try (Connection conn = DatabaseConnection.getConnection();
              PreparedStatement stmt = conn.prepareStatement(sql)) {
 
@@ -75,7 +78,8 @@ public class BookDAO {
             stmt.setString(2, book.getAuthor());
             stmt.setInt(3, book.getYearPublished());
             stmt.setString(4, book.getGenre());
-            stmt.setInt(5, book.getId());
+            stmt.setInt(5, book.getStock());
+            stmt.setInt(6, book.getId());
 
             return stmt.executeUpdate() > 0;
 
@@ -98,4 +102,37 @@ public class BookDAO {
             return false;
         }
     }
+
+
+    public static boolean decreaseStock(int bookId) {
+        String sql = "UPDATE books SET stock = stock - 1 WHERE id = ? AND stock > 0";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, bookId);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    public static boolean increaseStock(int bookId) {
+        String sql = "UPDATE books SET stock = stock + 1 WHERE id = ?";
+        try (Connection conn = DatabaseConnection.getConnection();
+            PreparedStatement stmt = conn.prepareStatement(sql)) {
+
+            stmt.setInt(1, bookId);
+            return stmt.executeUpdate() > 0;
+
+        } catch (SQLException e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+
+
+    
 }

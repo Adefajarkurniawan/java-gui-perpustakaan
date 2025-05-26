@@ -26,7 +26,9 @@ public class AdminDashboardController {
     @FXML private TableColumn<Book, String> colAuthor;
     @FXML private TableColumn<Book, Integer> colYear;
     @FXML private TableColumn<Book, String> colGenre;
+    @FXML private TableColumn<Book, Integer> colStock;
     @FXML private TableColumn<Book, Void> colActions;
+    
 
     @FXML private TextField txtSearch;
 
@@ -39,6 +41,8 @@ public class AdminDashboardController {
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colYear.setCellValueFactory(new PropertyValueFactory<>("yearPublished"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));
+
 
         loadBooks();
         addActionButtonsToTable();
@@ -151,9 +155,11 @@ public class AdminDashboardController {
         comboGenre.getItems().addAll("Fantasi", "Science", "Petualangan", "Misteri", "Horor", "Romansa", "Drama");
         comboGenre.setValue(book.getGenre());
         comboGenre.setPromptText("Pilih Genre");
+        TextField txtStock = new TextField(String.valueOf(book.getStock()));  // untuk edit
+        txtStock.setPromptText("Stok (angka)");
 
         // Layout form
-        VBox vbox = new VBox(10, txtTitle, txtAuthor, txtYear, comboGenre);
+        VBox vbox = new VBox(10, txtTitle, txtAuthor, txtYear, comboGenre, txtStock);
         dialog.getDialogPane().setContent(vbox);
 
         // Handle the button click
@@ -163,6 +169,19 @@ public class AdminDashboardController {
                 String author = txtAuthor.getText().trim();
                 String year = txtYear.getText().trim();
                 String genre = comboGenre.getValue();
+                String stockStr = txtStock.getText().trim();
+                int stock;
+                try {
+                    stock = Integer.parseInt(stockStr);
+                    if (stock < 0) {
+                        showErrorAlert("Stok tidak boleh negatif!");
+                        return null;
+                    }
+                } catch (NumberFormatException e) {
+                    showErrorAlert("Stok harus berupa angka!");
+                    return null;
+                }
+                
 
                 // Validasi
                 if (title.isEmpty() || author.isEmpty() || year.isEmpty() || genre == null) {
@@ -193,6 +212,7 @@ public class AdminDashboardController {
                 book.setAuthor(author);
                 book.setYearPublished(Integer.parseInt(year));
                 book.setGenre(genre);
+                book.setStock(stock);
 
                 return book;
             }
@@ -247,9 +267,11 @@ public class AdminDashboardController {
         ComboBox<String> comboGenre = new ComboBox<>();
         comboGenre.getItems().addAll("Fantasi", "Science", "Petualangan", "Misteri", "Horor", "Romansa", "Drama");
         comboGenre.setPromptText("Pilih Genre");
-
+        TextField txtStock = new TextField();
+        txtStock.setPromptText("Stock");
+        
         // Layout form
-        VBox vbox = new VBox(10, txtTitle, txtAuthor, txtYear, comboGenre);
+        VBox vbox = new VBox(10, txtTitle, txtAuthor, txtYear, comboGenre, txtStock);
         dialog.getDialogPane().setContent(vbox);
 
        // Handle the button click
@@ -259,6 +281,18 @@ public class AdminDashboardController {
                 String author = txtAuthor.getText().trim();
                 String year = txtYear.getText().trim();
                 String genre = comboGenre.getValue();
+                String stockStr = txtStock.getText().trim();
+                int stock;
+                try {
+                    stock = Integer.parseInt(stockStr);
+                    if (stock < 0) {
+                        showErrorAlert("Stok tidak boleh negatif!");
+                        return null;
+                    }
+                } catch (NumberFormatException e) {
+                    showErrorAlert("Stok harus berupa angka!");
+                    return null;
+                }
 
                 // Validasi
                 if (title.isEmpty() || author.isEmpty() || year.isEmpty() || genre == null) {
@@ -291,7 +325,7 @@ public class AdminDashboardController {
                 newBook.setAuthor(author);
                 newBook.setYearPublished(Integer.parseInt(year));
                 newBook.setGenre(genre);
-
+                newBook.setStock(stock);
                 return newBook;
             }
             return null;

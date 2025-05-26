@@ -23,6 +23,7 @@ public class UserDashboardController {
     @FXML private TableColumn<Book, String> colAuthor;
     @FXML private TableColumn<Book, Integer> colYear;
     @FXML private TableColumn<Book, String> colGenre;
+    @FXML private TableColumn<Book, Integer> colStock;
     @FXML private TableColumn<Book, Void> colAction;  // Tambahan kolom aksi
 
     @FXML private TextField txtSearch;
@@ -36,6 +37,7 @@ public class UserDashboardController {
         colAuthor.setCellValueFactory(new PropertyValueFactory<>("author"));
         colYear.setCellValueFactory(new PropertyValueFactory<>("yearPublished"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
+        colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));  // Tambah ini
 
         loadBooks();
         addActionButtonsToTable();
@@ -164,11 +166,20 @@ public class UserDashboardController {
             return;
         }
 
+        // Cek stok buku sebelum pinjam
+        if (book.getStock() <= 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Stok Kosong");
+            alert.setContentText("Maaf, stok buku ini sudah habis.");
+            alert.showAndWait();
+            return;
+        }
+
         Alert confirm = new Alert(Alert.AlertType.CONFIRMATION);
         confirm.setTitle("Konfirmasi Peminjaman");
         confirm.setHeaderText("Pinjam Buku");
         confirm.setContentText("Apakah Anda yakin ingin meminjam buku:\n" + book.getTitle() + "?");
-
+    
         confirm.showAndWait().ifPresent(response -> {
             if (response == ButtonType.OK) {
                 boolean success = BorrowHistoryDAO.borrowBook(userId, book);
@@ -187,6 +198,14 @@ public class UserDashboardController {
                 }
             }
         });
+
+        if (book.getStock() <= 0) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Stok Kosong");
+            alert.setContentText("Maaf, stok buku ini sudah habis.");
+            alert.showAndWait();
+            return;
+        }
     }
 
 
