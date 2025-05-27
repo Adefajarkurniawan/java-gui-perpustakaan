@@ -49,18 +49,15 @@
             loadBooks();
             addActionButtonsToTable();
 
-            
             txtSearch.textProperty().addListener((observable, oldValue, newValue) -> {
                 filterBooks(newValue);
             });
         }
 
-
         private void loadBooks() {
             bookList = FXCollections.observableArrayList(BookDAO.getAllBooks());
             tableBooks.setItems(bookList);
         }
-
 
         private void addActionButtonsToTable() {
             colActions.setCellFactory(param -> new TableCell<Book, Void>() {

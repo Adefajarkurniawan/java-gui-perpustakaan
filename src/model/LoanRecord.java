@@ -1,7 +1,7 @@
 package model;
 
 public class LoanRecord {
-    private int loanId;       // id dari tabel loans
+    private int loanId;       
     private String bookTitle;
     private String loanDate;
     private String status;

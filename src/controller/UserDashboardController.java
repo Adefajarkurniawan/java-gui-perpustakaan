@@ -10,6 +10,7 @@ import java.io.IOException;
 
 import javafx.collections.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.HBox;
 import javafx.stage.Stage;
 import model.Book;
 import model.BookDAO;
@@ -25,8 +26,10 @@ public class UserDashboardController {
     @FXML private TableColumn<Book, String> colGenre;
     @FXML private TableColumn<Book, Integer> colStock;
     @FXML private TableColumn<Book, Void> colAction;  // Tambahan kolom aksi
+    
 
     @FXML private TextField txtSearch;
+    @FXML private Label lblUserGreeting;
     
 
     private ObservableList<Book> bookList;
@@ -38,6 +41,9 @@ public class UserDashboardController {
         colYear.setCellValueFactory(new PropertyValueFactory<>("yearPublished"));
         colGenre.setCellValueFactory(new PropertyValueFactory<>("genre"));
         colStock.setCellValueFactory(new PropertyValueFactory<>("stock"));  // Tambah ini
+        lblUserGreeting.setText("Selamat datang, " + model.Session.getCurrentUser()); 
+      
+
 
         loadBooks();
         addActionButtonsToTable();
@@ -81,6 +87,7 @@ public class UserDashboardController {
     colAction.setCellFactory(param -> new TableCell<Book, Void>() {
         private final Button btnBorrow = new Button("Pinjam");
         private final Button btnReturn = new Button("Kembalikan");
+        private final HBox hbox = new HBox(5);  
 
         {
             btnBorrow.setOnAction(event -> {
@@ -92,6 +99,12 @@ public class UserDashboardController {
                 Book book = getTableView().getItems().get(getIndex());
                 returnBook(book);
             });
+
+            // Styling tombol, bisa ditambah juga di CSS
+            btnBorrow.getStyleClass().add("btn-borrow");
+            btnReturn.getStyleClass().add("btn-return");
+
+            hbox.getChildren().addAll(btnBorrow, btnReturn);
         }
 
             @Override
@@ -99,17 +112,19 @@ public class UserDashboardController {
                 super.updateItem(item, empty);
                 if (empty) {
                     setGraphic(null);
-                    return;
-                }
-
-                Book book = getTableView().getItems().get(getIndex());
-                int userId = Session.getCurrentUserId();
-                boolean isBorrowed = BorrowHistoryDAO.isBookBorrowedByUser(userId, book.getId());
-
-                if (isBorrowed) {
-                    setGraphic(btnReturn);
                 } else {
-                    setGraphic(btnBorrow);
+                    Book book = getTableView().getItems().get(getIndex());
+                    int userId = Session.getCurrentUserId();
+                    boolean isBorrowed = BorrowHistoryDAO.isBookBorrowedByUser(userId, book.getId());
+
+                    if (isBorrowed) {
+                        // Hanya tampilkan tombol Kembalikan, sembunyikan Pinjam
+                        hbox.getChildren().setAll(btnReturn);
+                    } else {
+                        // Hanya tampilkan tombol Pinjam, sembunyikan Kembalikan
+                        hbox.getChildren().setAll(btnBorrow);
+                    }
+                    setGraphic(hbox);
                 }
             }
         });
@@ -235,6 +250,8 @@ public class UserDashboardController {
             e.printStackTrace();
         }
     }
+
+    
 
 
 

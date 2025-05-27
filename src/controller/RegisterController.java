@@ -53,8 +53,16 @@ public class RegisterController {
         boolean success = User.register(username, password);
         if (success) {
             lblMessage.setText("Registrasi berhasil, silakan login");
+            lblMessage.getStyleClass().removeAll("error-label");
+            if (!lblMessage.getStyleClass().contains("success-label")) {
+                lblMessage.getStyleClass().add("success-label");
+            }
         } else {
             lblMessage.setText("Username sudah dipakai atau input tidak valid");
+            lblMessage.getStyleClass().removeAll("success-label");
+            if (!lblMessage.getStyleClass().contains("error-label")) {
+                lblMessage.getStyleClass().add("error-label");
+            }
         }
     }
 

@@ -1,0 +1,134 @@
+/* Background Gradient */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #4caf50, #81c784);
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Header */
+.header-box {
+    -fx-background-color: #2e7d32;
+    -fx-padding: 10 20 10 20;
+    -fx-border-radius: 0 0 10 10;
+    -fx-background-radius: 0 0 10 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.3), 5, 0, 0, 1);
+    
+}
+
+.header-label {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+}
+
+/* Buttons */
+.btn-primary {
+    -fx-background-color: #388e3c;
+    -fx-text-fill: white;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+
+.btn-primary:hover {
+    -fx-background-color: #2e7d32;
+}
+
+.btn-secondary {
+    -fx-background-color: #a5d6a7;
+    -fx-text-fill: #2e7d32;
+    -fx-font-size: 14px;
+    -fx-padding: 8 16 8 16;
+    -fx-background-radius: 20;
+    -fx-cursor: hand;
+    -fx-font-weight: bold;
+    -fx-border-color: transparent;
+}
+
+.btn-secondary:hover {
+    -fx-background-color: #81c784;
+}
+
+/* Search field */
+.search-field {
+    -fx-background-radius: 20;
+    -fx-padding: 8 15 8 15;
+    -fx-font-size: 14px;
+}
+
+/* TableView styling */
+.table-view {
+    -fx-background-color: rgb(230, 245, 220);
+    -fx-border-radius: 10;
+    -fx-background-radius: 10;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.15), 5, 0, 0, 1);
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+    -fx-padding: 10px;
+}
+
+/* Table Header */
+.table-view .column-header-background {
+    -fx-background-color: #66bb6a;
+}
+
+.table-view .column-header, .table-view .filler {
+    -fx-size: 35px;
+}
+
+.table-view .column-header .label {
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-font-size: 14px;
+    -fx-alignment: center;
+}
+
+/* Row Hover Effect */
+.table-view .table-row-cell:hover {
+    -fx-background-color: #dcedc8; /* Light green on hover */
+}
+
+/* Customizing Buttons in Cells */
+.btn-borrow {
+    -fx-background-color: #4A90E2;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15 5 15;
+    -fx-cursor: hand;
+}
+
+.btn-borrow:hover {
+    -fx-background-color: #357ABD;
+}
+
+.btn-return {
+    -fx-background-color: #27AE60;
+    -fx-text-fill: white;
+    -fx-font-weight: bold;
+    -fx-background-radius: 20;
+    -fx-padding: 5 15 5 15;
+    -fx-cursor: hand;
+}
+
+.btn-return:hover {
+    -fx-background-color: #1E8449;
+}
+
+/* Styling for individual cells */
+.table-cell {
+    -fx-padding: 5px 10px; /* Add padding inside each cell */
+}
+
+/* Styling the table's columns */
+.table-view .column-header {
+    -fx-alignment: center; /* Center header */
+}
+
+/* Make sure the action buttons are aligned properly */
+.table-view .table-cell {
+    -fx-alignment: center;
+}
+

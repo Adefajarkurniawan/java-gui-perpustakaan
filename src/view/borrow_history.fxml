@@ -2,22 +2,35 @@
 
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
+<?import javafx.geometry.Insets?>
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controller.BorrowHistoryController"
-      spacing="15" alignment="CENTER" stylesheets="@style.css"
-      prefWidth="700" prefHeight="500">
+      spacing="15" alignment="CENTER" stylesheets="@style/borrow_history.css"
+      prefWidth="737" prefHeight="550">
 
-    <Label text="Riwayat Peminjaman Buku" styleClass="header-label" />
+    <padding>
+        <Insets top="10" right="10" bottom="10" left="10"/>
+    </padding>
 
-    <TableView fx:id="tableHistory" prefWidth="650" prefHeight="400">
+    <!-- Header Section -->
+    <HBox alignment="CENTER_LEFT" spacing="20" styleClass="header-box" prefHeight="70">
+        <Label text="Riwayat Peminjaman Buku" styleClass="header-label"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Kembali ke Dashboard" onAction="#goBackToDashboard" styleClass="btn-back-dashboard"/>
+    </HBox>
+
+    <!-- Table Section -->
+    <TableView fx:id="tableHistory" prefWidth="700" prefHeight="400" styleClass="table-view">
+        <padding>
+            <Insets top="10" right="10" bottom="10" left="10"/>
+        </padding>
         <columns>
             <TableColumn fx:id="colTitle" text="Judul Buku" prefWidth="250"/>
             <TableColumn fx:id="colLoanDate" text="Tanggal Pinjam" prefWidth="150"/>
             <TableColumn fx:id="colReturnDate" text="Tanggal Kembali" prefWidth="150"/>
-            <TableColumn fx:id="colStatus" text="Status" prefWidth="100"/>
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="130"/>
         </columns>
     </TableView>
 
-    <Button text="Kembali ke Dashboard" onAction="#goBackToDashboard" styleClass="btn-primary"/>
 </VBox>
