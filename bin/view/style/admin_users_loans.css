@@ -104,3 +104,31 @@
     -fx-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Bayangan lebih kecil saat ditekan */
     -fx-transform: scale(0.98); /* Mengurangi ukuran sedikit saat ditekan */
 }
+
+/* Styling untuk Tombol "Kembalikan" */
+.btn-return {
+    -fx-background-color: #eab308; /* Warna kuning terang */
+    -fx-text-fill: white; /* Teks berwarna putih */
+    -fx-font-size: 14px; /* Ukuran font */
+    -fx-padding: 8 16; /* Padding horizontal dan vertikal */
+    -fx-background-radius: 20; /* Sudut membulat */
+    -fx-font-weight: bold; /* Menebalkan font */
+    -fx-cursor: hand; /* Kursor tangan saat hover */
+    -fx-border-color: transparent; /* Menghilangkan border */
+    -fx-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Efek bayangan halus */
+    -fx-transition: all 0.3s ease-in-out; /* Transisi halus */
+}
+
+/* Efek hover saat tombol "Kembalikan" di hover */
+.btn-return:hover {
+    -fx-background-color: #ca8a04; /* Warna kuning lebih gelap saat hover */
+    -fx-transform: scale(1.05); /* Zoom sedikit saat hover */
+    -fx-shadow: 0 8px 12px rgba(0, 0, 0, 0.3); /* Bayangan lebih kuat saat hover */
+}
+
+/* Efek saat tombol "Kembalikan" ditekan */
+.btn-return:pressed {
+    -fx-background-color: #b37b05; /* Warna lebih gelap saat ditekan */
+    -fx-shadow: 0 4px 6px rgba(0, 0, 0, 0.2); /* Bayangan lebih kecil saat ditekan */
+    -fx-transform: scale(0.98); /* Mengurangi ukuran sedikit saat ditekan */
+}

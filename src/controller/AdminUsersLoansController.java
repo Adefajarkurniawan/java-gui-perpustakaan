@@ -46,6 +46,8 @@ public class AdminUsersLoansController {
             private final Button btnReturn = new Button("Kembalikan");
 
             {
+                btnReturn.getStyleClass().add("btn-return");
+                
                 btnReturn.setOnAction(event -> {
                     UserLoanRecord loan = getTableView().getItems().get(getIndex());
                     returnBook(loan);

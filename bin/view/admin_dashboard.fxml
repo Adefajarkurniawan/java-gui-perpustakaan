@@ -36,14 +36,14 @@
             </HBox> -->
             
             <!-- TableView for Books -->
-            <TableView fx:id="tableBooks" prefHeight="350" prefWidth="750" styleClass="table-view" VBox.vgrow="ALWAYS">
+            <TableView fx:id="tableBooks" prefHeight="350" prefWidth="690" styleClass="table-view" VBox.vgrow="ALWAYS">
                 <columns>
                     <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
                     <TableColumn fx:id="colTitle" text="Judul" prefWidth="250"/>
                     <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200"/>
                     <TableColumn fx:id="colYear" text="Tahun" prefWidth="80"/>
                     <TableColumn fx:id="colGenre" text="Genre" prefWidth="150"/>
-                    <TableColumn fx:id="colStock" text="Stok" prefWidth="80"/>
+                    <TableColumn fx:id="colStock" text="Stok" prefWidth="100"/>
                     <TableColumn fx:id="colActions" text="Aksi" prefWidth="0"/>
                 </columns>
             </TableView>

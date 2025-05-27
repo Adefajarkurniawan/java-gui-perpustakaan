@@ -4,10 +4,13 @@
     -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Statistic Box Styling */
+/* Statistik Box Styling */
 .statistic-box {
     -fx-spacing: 30;
     -fx-alignment: center;
+    -fx-hgap: 20; /* Menambahkan jarak horizontal antar box statistik */
+    -fx-padding: 20px; /* Memberikan padding pada HBox */
+    -fx-margin-bottom: 20px; /* Memberikan jarak antara statistik dan konten berikutnya */
 }
 
 .statistic-item {
@@ -16,6 +19,7 @@
     -fx-border-radius: 10px;
     -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);
     -fx-pref-width: 200px;
+    -fx-pref-height: 100px;  /* Menetapkan tinggi agar statistik tidak terlalu rapat */
 }
 
 .statistic-label {

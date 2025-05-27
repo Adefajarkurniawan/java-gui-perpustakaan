@@ -4,13 +4,14 @@
 <?import javafx.scene.control.*?>
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
-      fx:controller="controller.StatistikController" spacing="20" alignment="CENTER"
+      fx:controller="controller.StatistikController" spacing="20" alignment="TOP_CENTER"
       prefWidth="750" prefHeight="550" stylesheets="@style/statistik.css">
 
+    <!-- Header -->
     <Label text="Statistik Perpustakaan" styleClass="header-label"/>
 
-    <!-- Statistik Buku -->
-    <HBox spacing="30" styleClass="statistic-box">
+    <!-- Statistik Box yang berada di bagian atas -->
+    <HBox spacing="30" styleClass="statistic-box" alignment="CENTER">
         <VBox alignment="CENTER" spacing="10" styleClass="statistic-item">
             <Label text="Total Buku" styleClass="statistic-label"/>
             <Label fx:id="totalBooks" styleClass="statistic-value"/>
@@ -20,9 +21,13 @@
             <Label fx:id="totalUsers" styleClass="statistic-value"/>
         </VBox>
         <VBox alignment="CENTER" spacing="10" styleClass="statistic-item">
-            <Label text="Buku yang Dipinjam" styleClass="statistic-label"/>
+            <Label text="Buku Dipinjam" styleClass="statistic-label"/>
             <Label fx:id="loanedBooks" styleClass="statistic-value"/>
         </VBox>
     </HBox>
+
+    <!-- Konten Lainnya (akan berada di bawah box statistik) -->
+    <!-- Misalnya, bisa menambahkan konten tambahan seperti tabel atau lainnya -->
+    <!-- Konten lain akan diletakkan di bawah HBox statistik -->
 
 </VBox>
