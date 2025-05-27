@@ -5,33 +5,50 @@
 
 <VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
       fx:controller="controller.AdminDashboardController" alignment="CENTER" spacing="20"
-      prefWidth="880" prefHeight="680" stylesheets="@style/style.css">
+      prefWidth="1000" prefHeight="700" stylesheets="@style/admin_dashboard.css">
 
-   <HBox spacing="10" style="-fx-background-color: #4A90E2; -fx-padding: 10;">
-      <Label text="Dashboard Admin" styleClass="header-label" />
-      <Button text="Lihat User Peminjaman" onAction="#openUsersLoans" />
-      <Button text="Logout" onAction="#handleLogout" />
-  </HBox>
-
-
-
-    <HBox spacing="10">
-        <Button text="Tambah Buku" onAction="#showAddBookDialog" />
-        <TextField fx:id="txtSearch" promptText="Cari buku..." />
-        <Button text="Cari" onAction="#handleSearch" />
+    <!-- Header -->
+    <HBox spacing="10" styleClass="header-box">
+        <Label text="Dashboard Admin" styleClass="header-label"/>
+        <Region HBox.hgrow="ALWAYS"/>
+        <Button text="Logout" onAction="#handleLogout" styleClass="btn-logout"/>
     </HBox>
 
-    <!-- Tabel Daftar Buku -->
-    <TableView fx:id="tableBooks" prefHeight="450" prefWidth="880">
-      <columns>
-          <TableColumn fx:id="colId" text="ID" prefWidth="50" />
-          <TableColumn fx:id="colTitle" text="Judul" prefWidth="250" />
-          <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200" />
-          <TableColumn fx:id="colYear" text="Tahun" prefWidth="80" />
-          <TableColumn fx:id="colGenre" text="Genre" prefWidth="150" />
-          <TableColumn fx:id="colStock" text="Stok" prefWidth="80" />
-          <TableColumn fx:id="colActions" text="Aksi" prefWidth="120" /> <!-- Kolom Aksi -->
-      </columns>
-  </TableView>
+     <!-- Search bar -->
+    <HBox spacing="10" alignment="CENTER" prefWidth="850">
+        <TextField fx:id="txtSearch" promptText="Cari buku..." prefWidth="650" styleClass="search-fields"/>
+    </HBox>
+
+    <!-- Sidebar -->
+    <HBox spacing="20" styleClass="sidebar">
+        <VBox spacing="15" alignment="TOP_CENTER" prefWidth="250" styleClass="menu">
+            <Button text="Statistik" onAction="#showStatistik" styleClass="btn-primary"/> 
+            <Button text="Kelola Buku" onAction="#showKelolaBuku" styleClass="btn-primary"/>
+        </VBox>
+        
+        <!-- Main Content Area -->
+        <VBox fx:id="contentArea" prefWidth="750" styleClass="content-area"  spacing="20">
+            <!-- The content area will be dynamically populated based on selected menu item -->
+
+            <!-- Add Book Button -->
+            <!-- <HBox spacing="20">
+                <Button text="Tambah Buku" onAction="#showAddBookDialog" styleClass="btn-primary"/>
+            </HBox> -->
+            
+            <!-- TableView for Books -->
+            <TableView fx:id="tableBooks" prefHeight="350" prefWidth="750" styleClass="table-view" VBox.vgrow="ALWAYS">
+                <columns>
+                    <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+                    <TableColumn fx:id="colTitle" text="Judul" prefWidth="250"/>
+                    <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200"/>
+                    <TableColumn fx:id="colYear" text="Tahun" prefWidth="80"/>
+                    <TableColumn fx:id="colGenre" text="Genre" prefWidth="150"/>
+                    <TableColumn fx:id="colStock" text="Stok" prefWidth="80"/>
+                    <TableColumn fx:id="colActions" text="Aksi" prefWidth="0"/>
+                </columns>
+            </TableView>
+
+        </VBox>
+    </HBox>
 
 </VBox>

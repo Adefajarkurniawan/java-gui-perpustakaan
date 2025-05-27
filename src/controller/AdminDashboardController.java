@@ -19,6 +19,10 @@
 
 
     public class AdminDashboardController {
+        @FXML
+        private VBox contentArea; // To dynamically load content
+
+
 
         @FXML private TableView<Book> tableBooks;
         @FXML private TableColumn<Book, Integer> colId;
@@ -37,6 +41,8 @@
         @FXML
         public void initialize() {
 
+            
+
             ibookOperations = new BookDAO();
 
             colId.setCellValueFactory(new PropertyValueFactory<>("id"));
@@ -54,6 +60,44 @@
             });
         }
 
+        @FXML
+        private void showKelolaBuku() {
+            try {
+                // Memuat tampilan Kelola Buku
+                Parent root = FXMLLoader.load(getClass().getResource("/view/kelola_buku.fxml"));
+                contentArea.getChildren().clear();  // Clear previous content
+                contentArea.getChildren().add(root);  // Menambahkan konten baru
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        
+        @FXML
+        private void showStatistik() {
+            try {
+                // Memuat tampilan statistik.fxml
+                Parent root = FXMLLoader.load(getClass().getResource("/view/statistik.fxml"));
+                contentArea.getChildren().clear();  // Clear previous content
+                contentArea.getChildren().add(root);  // Menambahkan konten baru
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
+        @FXML
+        private void handleLogout() {
+            // Proses logout dan pindah ke halaman login
+            try {
+                Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
+                Stage stage = (Stage) contentArea.getScene().getWindow();
+                stage.setScene(new Scene(root));
+                stage.setTitle("Login Perpustakaan");
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+
         private void loadBooks() {
             bookList = FXCollections.observableArrayList(BookDAO.getAllBooks());
             tableBooks.setItems(bookList);
@@ -63,6 +107,7 @@
             colActions.setCellFactory(param -> new TableCell<Book, Void>() {
                 private final Button btnEdit = new Button("Edit");
                 private final Button btnDelete = new Button("Hapus");
+                private final HBox hbox = new HBox(5);  
 
                 {
                     // Action untuk tombol Edit
@@ -76,6 +121,10 @@
                         Book book = getTableView().getItems().get(getIndex());
                         showDeleteConfirmationDialog(book);
                     });
+
+                    // Styling tombol, bisa ditambah juga di CSS
+                    btnEdit.getStyleClass().add("btn-edit");
+                    btnDelete.getStyleClass().add("btn-delete");
                 }
 
                 @Override
@@ -334,22 +383,6 @@
                 Stage stage = (Stage) tableBooks.getScene().getWindow();
                 stage.setScene(new Scene(root));
                 stage.setTitle("User dan Peminjaman");
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-
-        @FXML
-        private void handleLogout() {
-            // Clear session
-            model.Session.clear();
-
-            // Pindah ke halaman login
-            try {
-                Parent root = FXMLLoader.load(getClass().getResource("/view/login.fxml"));
-                Stage stage = (Stage) tableBooks.getScene().getWindow();
-                stage.setScene(new Scene(root));
-                stage.setTitle("Login Perpustakaan");
             } catch (IOException e) {
                 e.printStackTrace();
             }

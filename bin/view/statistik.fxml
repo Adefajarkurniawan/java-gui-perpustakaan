@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.StatistikController" spacing="20" alignment="CENTER"
+      prefWidth="750" prefHeight="550" stylesheets="@style/statistik.css">
+
+    <Label text="Statistik Perpustakaan" styleClass="header-label"/>
+
+    <!-- Statistik Buku -->
+    <HBox spacing="30" styleClass="statistic-box">
+        <VBox alignment="CENTER" spacing="10" styleClass="statistic-item">
+            <Label text="Total Buku" styleClass="statistic-label"/>
+            <Label fx:id="totalBooks" styleClass="statistic-value"/>
+        </VBox>
+        <VBox alignment="CENTER" spacing="10" styleClass="statistic-item">
+            <Label text="Total User" styleClass="statistic-label"/>
+            <Label fx:id="totalUsers" styleClass="statistic-value"/>
+        </VBox>
+        <VBox alignment="CENTER" spacing="10" styleClass="statistic-item">
+            <Label text="Buku yang Dipinjam" styleClass="statistic-label"/>
+            <Label fx:id="loanedBooks" styleClass="statistic-value"/>
+        </VBox>
+    </HBox>
+
+</VBox>

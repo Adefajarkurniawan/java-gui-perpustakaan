@@ -1,0 +1,39 @@
+/* Background Gradient for the entire screen */
+.root {
+    -fx-background-color: linear-gradient(to bottom right, #4CAF50, #81C784);
+    -fx-font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+}
+
+/* Statistic Box Styling */
+.statistic-box {
+    -fx-spacing: 30;
+    -fx-alignment: center;
+}
+
+.statistic-item {
+    -fx-background-color: white;
+    -fx-padding: 20px;
+    -fx-border-radius: 10px;
+    -fx-effect: dropshadow(gaussian, rgba(0, 0, 0, 0.1), 5, 0, 0, 1);
+    -fx-pref-width: 200px;
+}
+
+.statistic-label {
+    -fx-font-size: 18px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #388E3C;
+}
+
+.statistic-value {
+    -fx-font-size: 22px;
+    -fx-font-weight: bold;
+    -fx-text-fill: #388E3C;
+}
+
+/* Header Label Styling */
+.header-label {
+    -fx-text-fill: white;
+    -fx-font-size: 26px;
+    -fx-font-weight: bold;
+    -fx-padding: 10 0 20 0;
+}

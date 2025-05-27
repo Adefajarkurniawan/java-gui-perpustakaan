@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns="http://javafx.com/javafx/21" xmlns:fx="http://javafx.com/fxml/1"
+      fx:controller="controller.AdminDashboardController" spacing="20" alignment="CENTER"
+      prefWidth="750" prefHeight="550" stylesheets="@style/kelola_buku.css">
+
+    <!--Search Bar -->
+    <HBox spacing="10">
+        <Button text="Tambah Buku" onAction="#showAddBookDialog" styleClass="btn-primary"/>
+        <TextField fx:id="txtSearch" promptText="Cari buku..." styleClass="search-field"/>
+        <Region HBox.hgrow="ALWAYS"/> <!-- Add a Region for stretching -->
+        <!-- Button for "Lihat User Peminjaman" aligned to the right -->
+        <Button text="Lihat User Peminjaman" onAction="#openUsersLoans" styleClass="btn-primary" />
+    </HBox>
+
+    <!-- Table of Books -->
+    <TableView fx:id="tableBooks" prefHeight="350" prefWidth="750" styleClass="table-view" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="ID" prefWidth="50"/>
+            <TableColumn fx:id="colTitle" text="Judul" prefWidth="250"/>
+            <TableColumn fx:id="colAuthor" text="Penulis" prefWidth="200"/>
+            <TableColumn fx:id="colYear" text="Tahun" prefWidth="80"/>
+            <TableColumn fx:id="colGenre" text="Genre" prefWidth="150"/>
+            <TableColumn fx:id="colStock" text="Stok" prefWidth="80"/>
+            <TableColumn fx:id="colActions" text="Aksi" prefWidth="160"/>
+        </columns>
+    </TableView>
+
+</VBox>
