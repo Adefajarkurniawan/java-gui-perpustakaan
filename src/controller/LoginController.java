@@ -40,7 +40,7 @@ public class LoginController {
             return;
         }
 
-        Person person = User.login(username, password); // sekarang kembalikan objek Person
+        Person person = User.login(username, password); // Bisa mengembalikan User atau Admin (polymorphism)
         if (person != null) {
             Session.setCurrentUser(person.getUsername());
             Session.setCurrentUserId(person.getId());
@@ -48,12 +48,7 @@ public class LoginController {
             lblMessage.setText("Login berhasil sebagai " + person.getRole());
 
             try {
-                Parent root;
-                if ("admin".equalsIgnoreCase(person.getRole())) {
-                    root = FXMLLoader.load(getClass().getResource("/view/admin_dashboard.fxml"));
-                } else {
-                    root = FXMLLoader.load(getClass().getResource("/view/user_dashboard.fxml"));
-                }
+                Parent root = FXMLLoader.load(getClass().getResource(person.getDashboardView())); // Polymorphism di sini
                 Stage stage = (Stage) lblMessage.getScene().getWindow();
                 stage.setScene(new Scene(root));
             } catch (IOException e) {

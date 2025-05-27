@@ -22,4 +22,10 @@ public abstract class Person {
 
     public String getRole() { return role; }
     public void setRole(String role) { this.role = role; }
+
+    // Method yang akan di-override oleh subclass
+    public String getDashboardView() {
+        // Default untuk user biasa
+        return "/view/user_dashboard.fxml";
+    }
 }

@@ -24,4 +24,5 @@ public class Session {
         currentUser = null;
         currentUserId = 0;
     }
+
 }

@@ -10,5 +10,8 @@ public class Admin extends Person {
         super(id, username, "admin");
     }
 
-    // Bisa tambahkan fungsi khusus Admin di sini bila diperlukan
+    @Override
+    public String getDashboardView() {
+        return "/view/admin_dashboard.fxml";  // override supaya admin buka dashboard admin
+    }
 }
